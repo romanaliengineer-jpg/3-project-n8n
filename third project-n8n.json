@@ -1,0 +1,249 @@
+{
+  "name": "third project-n8n",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "= what is seo",
+        "options": {
+          "systemMessage": "You are a helpful assistant"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -192,
+        -176
+      ],
+      "id": "e27077d1-1ba5-4284-89de-f28849dc8194",
+      "name": "AI Agent",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "model": "moonshotai/kimi-k2-instruct-0905",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -96,
+        128
+      ],
+      "id": "79c1193d-e5af-4d2c-bc84-d06f9b3e9854",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "YMJZOPsj9BeVpY9w",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "42b92f90-3ec4-49cc-94f2-3598d6076e14",
+              "name": "name",
+              "value": "={{ $('roman-sheet1').item.json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "39a0cbea-9e87-48fd-aa4e-9cc6f0ab0b94",
+              "name": "description",
+              "value": "={{ $('AI Agent').item.json.output }}",
+              "type": "string"
+            },
+            {
+              "id": "67b7eae4-32a4-4fee-bf26-35c98be282df",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        -176
+      ],
+      "id": "ce96503c-a1ef-4463-a322-b8bcc85a6849",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/18GzKTNLCliTlqPdv6w5L1Aybl_l3WEQcEa-ZG7TuPkk/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/18GzKTNLCliTlqPdv6w5L1Aybl_l3WEQcEa-ZG7TuPkk/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        0
+      ],
+      "id": "1af685dc-d889-491b-ac98-ded01115526d",
+      "name": "roman-sheet1",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "hCjsN1UhAptCuknM",
+          "name": "Google Sheets Trigger account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1waCLNYf-bW7vd84sOAhv_XFE7HKVaqsIy_DBvhUOLuQ/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1waCLNYf-bW7vd84sOAhv_XFE7HKVaqsIy_DBvhUOLuQ/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "description": "={{ $('Edit Fields').item.json.description}}",
+            "name": "={{ $('Edit Fields').item.json.name }}"
+          },
+          "matchingColumns": [
+            "name"
+          ],
+          "schema": [
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        448,
+        -176
+      ],
+      "id": "0b0d93c6-9aed-4390-85a1-54f46c471eed",
+      "name": "roman-sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "TmUlyxtEU8TDSK0X",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "roman-sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "roman-sheet1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "b8091122-8261-4d2c-b0e3-e63007cea568",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3a4043d496c1c76906d95005eedcd11b2c2414abd4d73864980fad999d9a5148"
+  },
+  "id": "hN1FLgv2P7jhn3HccMzis",
+  "tags": []
+}
